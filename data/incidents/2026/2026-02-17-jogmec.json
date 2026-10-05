@@ -1,0 +1,17 @@
+{
+  "organization": "独立行政法人エネルギー・金属鉱物資源機構（JOGMEC）",
+  "publishedAt": "2026-02-17",
+  "title": "元職員が在職中に取得した鉱業権者の個人情報を外部に持ち出し",
+  "summary": "退職した元職員が、在職中に業務で取得した、鉱山の休止・廃止時の鉱業権者2,246名分の個人情報を外部に持ち出していたことが判明した。",
+  "category": "内部不正",
+  "industry": "行政・自治体",
+  "records": { "count": 2246 },
+  "dataTypes": ["氏名"],
+  "reports": [
+    {
+      "date": "2026-02-17",
+      "url": "https://www.jogmec.go.jp/news/release/news_01_00048.html",
+      "summary": "個人情報の漏えいに関するお詫びとご報告。"
+    }
+  ]
+}
