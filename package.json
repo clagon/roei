@@ -1,0 +1,14 @@
+{
+  "name": "roei",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "check-urls": "node scripts/check-urls.mjs"
+  },
+  "dependencies": {
+    "astro": "^7.3.5"
+  },
+  "packageManager": "pnpm@11.24.0"
+}
