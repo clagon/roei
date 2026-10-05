@@ -26,7 +26,7 @@ const reports = data.reports.toSorted((a, b) => a.date.localeCompare(b.date));
   </dl>
 
   <h2>公表の経緯</h2>
-  <ol class="reports">
+  <ol class="reports" data-category={data.category}>
     {
       reports.map((r) => (
         <li>
@@ -43,10 +43,11 @@ const reports = data.reports.toSorted((a, b) => a.date.localeCompare(b.date));
   .date {
     margin: 2rem 0 0;
     color: var(--muted);
+    font-weight: 700;
   }
   h1 {
     margin: 0.25rem 0 1rem;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     line-height: 1.4;
   }
   .org {
@@ -57,27 +58,57 @@ const reports = data.reports.toSorted((a, b) => a.date.localeCompare(b.date));
   dl {
     display: grid;
     grid-template-columns: max-content 1fr;
-    gap: 0.25rem 1.5rem;
-    padding: 1rem 0;
-    border-block: 1px solid var(--line);
+    gap: 0.4rem 1.5rem;
+    padding: 1rem 1.25rem;
+    border: 2px solid var(--fg);
+    border-radius: 1rem;
+    background: var(--card);
+    box-shadow: 4px 4px 0 var(--fg);
   }
   dt {
     color: var(--muted);
+    font-weight: 700;
   }
   dd {
     margin: 0;
   }
   h2 {
-    font-size: 1rem;
-    margin-top: 2rem;
+    font-size: 1.1rem;
+    margin-top: 2.5rem;
   }
   .reports {
+    position: relative;
     list-style: none;
-    padding: 0;
-    border-left: 2px solid var(--fg);
+    padding: 0 0 0 2rem;
+  }
+  .reports::before {
+    content: "";
+    position: absolute;
+    left: 0.6rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 4px;
+    border-radius: 2px;
+    background: repeating-linear-gradient(var(--accent) 0 10px, transparent 10px 16px);
+    opacity: 0.35;
   }
   .reports li {
-    padding: 0 0 1.25rem 1rem;
+    position: relative;
+    padding-bottom: 1.5rem;
+  }
+  .reports li::before {
+    content: "";
+    position: absolute;
+    left: -1.85rem;
+    top: 0.35rem;
+    width: 1rem;
+    height: 1rem;
+    border: 3px solid var(--fg);
+    border-radius: 50%;
+    background: var(--c);
+  }
+  .reports time {
+    font-weight: 800;
   }
   .reports p {
     margin: 0.15rem 0;

@@ -12,10 +12,13 @@ const siteName = "国内情報漏洩タイムライン";
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title ? `${title} | ${siteName}` : siteName}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet" />
   </head>
   <body>
     <header>
-      <a href="/" class="site">{siteName}</a>
+      <a href="/" class="site">国内<em>情報漏洩</em>タイムライン</a>
     </header>
     <main>
       <slot />
@@ -33,21 +36,33 @@ const siteName = "国内情報漏洩タイムライン";
 
 <style is:global>
   :root {
-    --fg: #1d1d1b;
-    --muted: #6b6a66;
-    --line: #d9d6cf;
-    --bg: #faf9f6;
-    --accent: #b3261e;
+    --fg: #172554;
+    --muted: #5b6b8f;
+    --line: #cfdcf5;
+    --bg: #f2f7ff;
+    --card: #fff;
+    --accent: #2563eb;
+    --pop: #ffd43b;
     color-scheme: light;
   }
+  /* 種別ごとの色。タイムラインの点や詳細ページのラベルで使う */
+  [data-category="不正アクセス"] { --c: #2563eb; }
+  [data-category="ランサムウェア"] { --c: #e8366d; }
+  [data-category="誤送信"] { --c: #f59f00; }
+  [data-category="紛失・盗難"] { --c: #12b886; }
+  [data-category="内部不正"] { --c: #7048e8; }
+  [data-category="設定ミス"] { --c: #0c8599; }
+  [data-category="その他"] { --c: #868e96; }
   * {
     box-sizing: border-box;
   }
   body {
     margin: 0;
     background: var(--bg);
+    background-image: radial-gradient(#d6e3fb 1px, transparent 1px);
+    background-size: 18px 18px;
     color: var(--fg);
-    font-family: system-ui, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    font-family: "M PLUS Rounded 1c", system-ui, "Hiragino Maru Gothic ProN", sans-serif;
     line-height: 1.7;
   }
   header,
@@ -58,24 +73,29 @@ const siteName = "国内情報漏洩タイムライン";
     padding: 0 1rem;
   }
   header {
-    padding-block: 1.25rem;
-    border-bottom: 2px solid var(--fg);
+    padding-block: 2rem 0.5rem;
   }
   .site {
     color: inherit;
-    font-weight: 700;
-    font-size: 1.15rem;
+    font-weight: 800;
+    font-size: clamp(1.4rem, 4vw, 2rem);
     text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .site em {
+    font-style: normal;
+    color: var(--accent);
+    background: linear-gradient(transparent 60%, var(--pop) 60%);
   }
   footer {
     margin-top: 4rem;
     padding-block: 1.5rem;
-    border-top: 1px solid var(--line);
+    border-top: 2px dashed var(--line);
     color: var(--muted);
     font-size: 0.85rem;
   }
   a {
-    color: var(--fg);
+    color: var(--accent);
   }
   time,
   .num {

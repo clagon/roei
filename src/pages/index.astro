@@ -13,26 +13,31 @@ const months = Map.groupBy(incidents, (i) => i.data.publishedAt.slice(0, 7));
 
 <Base>
   <form id="filters" role="search">
-    <label>キーワード <input type="search" name="q" placeholder="組織名・タイトル" /></label>
-    <label>種別
-      <select name="category">
-        <option value="">すべて</option>
-        {categories.map((c) => <option>{c}</option>)}
-      </select>
-    </label>
-    <label>業種
-      <select name="industry">
-        <option value="">すべて</option>
-        {industries.map((c) => <option>{c}</option>)}
-        <option>未分類</option>
-      </select>
-    </label>
-    <label>規模
-      <select name="size">
-        <option value="">すべて</option>
-        {sizes.map((s) => <option>{s}</option>)}
-      </select>
-    </label>
+    <input type="search" name="q" placeholder="組織名・タイトルで検索" aria-label="キーワード" />
+    <details>
+      <summary>絞り込み<span id="active"></span></summary>
+      <div class="panel">
+        <label>種別
+          <select name="category">
+            <option value="">すべて</option>
+            {categories.map((c) => <option>{c}</option>)}
+          </select>
+        </label>
+        <label>業種
+          <select name="industry">
+            <option value="">すべて</option>
+            {industries.map((c) => <option>{c}</option>)}
+            <option>未分類</option>
+          </select>
+        </label>
+        <label>規模
+          <select name="size">
+            <option value="">すべて</option>
+            {sizes.map((s) => <option>{s}</option>)}
+          </select>
+        </label>
+      </div>
+    </details>
   </form>
   <p class="count" aria-live="polite"><span id="count" class="num">{incidents.length}</span> 件</p>
 
@@ -52,15 +57,14 @@ const months = Map.groupBy(incidents, (i) => i.data.publishedAt.slice(0, 7));
               data-industry={data.industry ?? "未分類"}
               data-size={sizeOf(data.records)}
             >
-              <time datetime={data.publishedAt}>{data.publishedAt.slice(5).replace("-", "/")}</time>
-              <div>
-                <a href={`/incidents/${id}/`}>
-                  <strong>{data.organization}</strong> {data.title}
-                </a>
-                <p class="meta">
+              <a class="card" href={`/incidents/${id}/`}>
+                <time datetime={data.publishedAt}>{data.publishedAt.slice(5).replace("-", "/")}</time>
+                <strong>{data.organization}</strong>
+                <span class="title">{data.title}</span>
+                <span class="meta">
                   {data.category} · {data.industry ?? "未分類"} · <span class="num">{formatRecords(data.records)}</span>
-                </p>
-              </div>
+                </span>
+              </a>
             </li>
           ))}
         </ol>
@@ -72,6 +76,7 @@ const months = Map.groupBy(incidents, (i) => i.data.publishedAt.slice(0, 7));
 <script>
   const form = document.querySelector<HTMLFormElement>("#filters")!;
   const count = document.querySelector("#count")!;
+  const active = document.querySelector("#active")!;
 
   function apply() {
     const f = new FormData(form);
@@ -93,6 +98,8 @@ const months = Map.groupBy(incidents, (i) => i.data.publishedAt.slice(0, 7));
       n += visible;
     }
     count.textContent = String(n);
+    const k = ["category", "industry", "size"].filter((name) => f.get(name)).length;
+    active.textContent = k ? ` ${k}` : "";
   }
 
   form.addEventListener("input", apply);
@@ -102,37 +109,112 @@ const months = Map.groupBy(incidents, (i) => i.data.publishedAt.slice(0, 7));
 <style>
   #filters {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem 1.25rem;
-    margin-top: 1.5rem;
+    gap: 0.5rem;
+    margin-top: 1rem;
     font-size: 0.9rem;
   }
-  #filters label {
-    display: flex;
-    flex-direction: column;
-    color: var(--muted);
-  }
   #filters input,
+  #filters summary,
   #filters select {
     font: inherit;
     color: var(--fg);
-    padding: 0.3rem 0.4rem;
-    border: 1px solid var(--line);
-    border-radius: 2px;
-    background: #fff;
+    padding: 0.35rem 0.9rem;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.6);
+  }
+  #filters input {
+    flex: 1;
+    min-width: 0;
+  }
+  #filters input:focus-visible,
+  #filters select:focus-visible,
+  #filters summary:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+  }
+  details {
+    position: relative;
+  }
+  summary {
+    cursor: pointer;
+    white-space: nowrap;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::after {
+    content: " ▾";
+    color: var(--muted);
+  }
+  details[open] summary {
+    border-color: var(--accent);
+  }
+  #active {
+    color: var(--accent);
+    font-weight: 800;
+  }
+  .panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.4rem);
+    z-index: 2;
+    display: grid;
+    gap: 0.6rem;
+    width: min(16rem, 80vw);
+    padding: 1rem;
+    border: 2px solid var(--fg);
+    border-radius: 1rem;
+    background: var(--card);
+    box-shadow: 4px 4px 0 var(--fg);
+  }
+  .panel label {
+    display: grid;
+    gap: 0.2rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  .panel select {
+    border-radius: 0.6rem;
+    font-weight: 400;
   }
   .count {
+    margin: 0.4rem 0 0;
+    text-align: right;
     color: var(--muted);
     font-size: 0.85rem;
   }
+
+  /* タイムライン: 左の縦線に月ラベルと種別色の点を並べる */
+  .month {
+    position: relative;
+    padding-left: 2rem;
+  }
+  .month::before {
+    content: "";
+    position: absolute;
+    left: 0.6rem;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-radius: 2px;
+    background: repeating-linear-gradient(var(--accent) 0 10px, transparent 10px 16px);
+    opacity: 0.35;
+  }
   .month h2 {
     position: sticky;
-    top: 0;
-    margin: 2rem 0 0;
-    padding: 0.4rem 0;
-    background: var(--bg);
+    top: 0.5rem;
+    z-index: 1;
+    display: inline-block;
+    margin: 2rem 0 0.5rem -2rem;
+    padding: 0.2rem 1rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
     font-size: 1rem;
-    border-bottom: 1px solid var(--fg);
+    box-shadow: 3px 3px 0 var(--fg);
   }
   ol {
     list-style: none;
@@ -140,28 +222,55 @@ const months = Map.groupBy(incidents, (i) => i.data.publishedAt.slice(0, 7));
     padding: 0;
   }
   li {
-    display: grid;
-    grid-template-columns: 3.5rem 1fr;
-    gap: 0.5rem;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--line);
+    position: relative;
+    padding: 0.5rem 0;
+  }
+  li::before {
+    content: "";
+    position: absolute;
+    left: -1.85rem;
+    top: 1.35rem;
+    width: 1rem;
+    height: 1rem;
+    border: 3px solid var(--fg);
+    border-radius: 50%;
+    background: var(--c);
   }
   li[hidden],
   section[hidden] {
     display: none;
   }
-  li > time {
+  .card {
+    display: grid;
+    gap: 0.1rem;
+    padding: 0.8rem 1rem;
+    border: 2px solid var(--fg);
+    border-radius: 1rem;
+    background: var(--card);
+    box-shadow: 4px 4px 0 var(--c);
+    color: var(--fg);
+    text-decoration: none;
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+  .card:hover,
+  .card:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--c);
+  }
+  .card time {
+    font-weight: 800;
     color: var(--muted);
   }
-  li a {
-    text-decoration: none;
-  }
-  li a:hover strong {
-    color: var(--accent);
+  .card strong {
+    font-size: 1.05rem;
   }
   .meta {
-    margin: 0.15rem 0 0;
     color: var(--muted);
     font-size: 0.85rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      transition: none;
+    }
   }
 </style>
