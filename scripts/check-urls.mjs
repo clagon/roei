@@ -1,5 +1,5 @@
-// 未コミットの事案ファイルに含まれる出典 URL が実在するか確認する。
-// 既存ファイルはリンク切れで永久に push が止まらないよう対象外。
+// 未コミットの事案ファイルで新たに追加された出典 URL が実在するか確認する。
+// HEAD に既にある URL はリンク切れで永久に push が止まらないよう対象外。
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 
@@ -9,9 +9,22 @@ const files = execFileSync("git", ["status", "--porcelain", "--untracked-files=a
   .map((l) => l.slice(3))
   .filter((f) => f.endsWith(".json"));
 
+const urlsOf = (json) => (JSON.parse(json).reports ?? []).map((r) => r.url);
+
+function committedUrls(file) {
+  try {
+    return new Set(urlsOf(execFileSync("git", ["show", `HEAD:${file}`], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] })));
+  } catch {
+    return new Set(); // 新規ファイル
+  }
+}
+
 const failures = [];
+let checked = 0;
 for (const file of files) {
-  for (const { url } of JSON.parse(readFileSync(file, "utf8")).reports ?? []) {
+  const old = committedUrls(file);
+  for (const url of urlsOf(readFileSync(file, "utf8")).filter((u) => !old.has(u))) {
+    checked++;
     try {
       const res = await fetch(url, {
         redirect: "follow",
@@ -25,7 +38,7 @@ for (const file of files) {
   }
 }
 
-console.log(`checked ${files.length} file(s)`);
+console.log(`checked ${checked} new url(s) in ${files.length} file(s)`);
 if (failures.length) {
   console.error(failures.join("\n"));
   process.exit(1);
