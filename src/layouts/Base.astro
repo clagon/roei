@@ -1,0 +1,84 @@
+---
+interface Props {
+  title?: string;
+}
+const { title } = Astro.props;
+const siteName = "国内情報漏洩タイムライン";
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ? `${title} | ${siteName}` : siteName}</title>
+  </head>
+  <body>
+    <header>
+      <a href="/" class="site">{siteName}</a>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer>
+      <p>
+        各組織の公表情報をもとに AI が自動収集しています。内容の正確性は保証しません。必ず出典の一次情報をご確認ください。
+      </p>
+      <p>
+        誤りの指摘・削除依頼は <a href="https://github.com/clagon/roei/issues/new">GitHub Issue</a> へ。
+      </p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --fg: #1d1d1b;
+    --muted: #6b6a66;
+    --line: #d9d6cf;
+    --bg: #faf9f6;
+    --accent: #b3261e;
+    color-scheme: light;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: system-ui, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    line-height: 1.7;
+  }
+  header,
+  main,
+  footer {
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  header {
+    padding-block: 1.25rem;
+    border-bottom: 2px solid var(--fg);
+  }
+  .site {
+    color: inherit;
+    font-weight: 700;
+    font-size: 1.15rem;
+    text-decoration: none;
+  }
+  footer {
+    margin-top: 4rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  a {
+    color: var(--fg);
+  }
+  time,
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

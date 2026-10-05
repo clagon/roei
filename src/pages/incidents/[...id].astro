@@ -1,0 +1,89 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import { formatRecords } from "../../lib";
+
+export async function getStaticPaths() {
+  return (await getCollection("incidents")).map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+
+const { data } = Astro.props.entry as CollectionEntry<"incidents">;
+const reports = data.reports.toSorted((a, b) => a.date.localeCompare(b.date));
+---
+
+<Base title={`${data.organization} ${data.title}`}>
+  <p class="date"><time datetime={data.publishedAt}>{data.publishedAt}</time> 公表</p>
+  <h1><span class="org">{data.organization}</span>{data.title}</h1>
+  <p>{data.summary}</p>
+
+  <dl>
+    <dt>種別</dt><dd>{data.category}</dd>
+    <dt>業種</dt><dd>{data.industry ?? "未分類"}</dd>
+    <dt>漏洩件数</dt><dd class="num">{formatRecords(data.records)}</dd>
+    {data.dataTypes && (<><dt>漏洩した情報</dt><dd>{data.dataTypes.join("、")}</dd></>)}
+    {data.occurredAt && (<><dt>発生日</dt><dd><time>{data.occurredAt}</time></dd></>)}
+    {data.discoveredAt && (<><dt>発覚日</dt><dd><time>{data.discoveredAt}</time></dd></>)}
+  </dl>
+
+  <h2>公表の経緯</h2>
+  <ol class="reports">
+    {
+      reports.map((r) => (
+        <li>
+          <time datetime={r.date}>{r.date}</time>
+          <p>{r.summary}</p>
+          <a href={r.url} rel="noopener" class="src">{r.url}</a>
+        </li>
+      ))
+    }
+  </ol>
+</Base>
+
+<style>
+  .date {
+    margin: 2rem 0 0;
+    color: var(--muted);
+  }
+  h1 {
+    margin: 0.25rem 0 1rem;
+    font-size: 1.5rem;
+    line-height: 1.4;
+  }
+  .org {
+    display: block;
+    font-size: 1rem;
+    color: var(--accent);
+  }
+  dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.25rem 1.5rem;
+    padding: 1rem 0;
+    border-block: 1px solid var(--line);
+  }
+  dt {
+    color: var(--muted);
+  }
+  dd {
+    margin: 0;
+  }
+  h2 {
+    font-size: 1rem;
+    margin-top: 2rem;
+  }
+  .reports {
+    list-style: none;
+    padding: 0;
+    border-left: 2px solid var(--fg);
+  }
+  .reports li {
+    padding: 0 0 1.25rem 1rem;
+  }
+  .reports p {
+    margin: 0.15rem 0;
+  }
+  .src {
+    font-size: 0.85rem;
+    word-break: break-all;
+  }
+</style>

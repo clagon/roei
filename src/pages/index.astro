@@ -1,0 +1,167 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import { categories, industries } from "../content.config";
+import { formatRecords, sizeOf, sizes } from "../lib";
+
+const incidents = (await getCollection("incidents")).sort(
+  (a, b) => b.data.publishedAt.localeCompare(a.data.publishedAt) || a.id.localeCompare(b.id),
+);
+
+const months = Map.groupBy(incidents, (i) => i.data.publishedAt.slice(0, 7));
+---
+
+<Base>
+  <form id="filters" role="search">
+    <label>キーワード <input type="search" name="q" placeholder="組織名・タイトル" /></label>
+    <label>種別
+      <select name="category">
+        <option value="">すべて</option>
+        {categories.map((c) => <option>{c}</option>)}
+      </select>
+    </label>
+    <label>業種
+      <select name="industry">
+        <option value="">すべて</option>
+        {industries.map((c) => <option>{c}</option>)}
+        <option>未分類</option>
+      </select>
+    </label>
+    <label>規模
+      <select name="size">
+        <option value="">すべて</option>
+        {sizes.map((s) => <option>{s}</option>)}
+      </select>
+    </label>
+  </form>
+  <p class="count" aria-live="polite"><span id="count" class="num">{incidents.length}</span> 件</p>
+
+  {incidents.length === 0 && <p>まだ事案がありません。</p>}
+
+  {
+    [...months].map(([month, items]) => (
+      <section class="month">
+        <h2>
+          <time datetime={month}>{month.replace("-", "年")}月</time>
+        </h2>
+        <ol>
+          {items.map(({ id, data }) => (
+            <li
+              data-text={`${data.organization} ${data.title}`.toLowerCase()}
+              data-category={data.category}
+              data-industry={data.industry ?? "未分類"}
+              data-size={sizeOf(data.records)}
+            >
+              <time datetime={data.publishedAt}>{data.publishedAt.slice(5).replace("-", "/")}</time>
+              <div>
+                <a href={`/incidents/${id}/`}>
+                  <strong>{data.organization}</strong> {data.title}
+                </a>
+                <p class="meta">
+                  {data.category} · {data.industry ?? "未分類"} · <span class="num">{formatRecords(data.records)}</span>
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))
+  }
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("#filters")!;
+  const count = document.querySelector("#count")!;
+
+  function apply() {
+    const f = new FormData(form);
+    const q = String(f.get("q")).trim().toLowerCase();
+    let n = 0;
+    for (const section of document.querySelectorAll<HTMLElement>(".month")) {
+      let visible = 0;
+      for (const li of section.querySelectorAll<HTMLElement>("li")) {
+        const d = li.dataset;
+        const show =
+          (!q || d.text!.includes(q)) &&
+          (!f.get("category") || d.category === f.get("category")) &&
+          (!f.get("industry") || d.industry === f.get("industry")) &&
+          (!f.get("size") || d.size === f.get("size"));
+        li.hidden = !show;
+        if (show) visible++;
+      }
+      section.hidden = visible === 0;
+      n += visible;
+    }
+    count.textContent = String(n);
+  }
+
+  form.addEventListener("input", apply);
+  form.addEventListener("submit", (e) => e.preventDefault());
+</script>
+
+<style>
+  #filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+  }
+  #filters label {
+    display: flex;
+    flex-direction: column;
+    color: var(--muted);
+  }
+  #filters input,
+  #filters select {
+    font: inherit;
+    color: var(--fg);
+    padding: 0.3rem 0.4rem;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    background: #fff;
+  }
+  .count {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .month h2 {
+    position: sticky;
+    top: 0;
+    margin: 2rem 0 0;
+    padding: 0.4rem 0;
+    background: var(--bg);
+    font-size: 1rem;
+    border-bottom: 1px solid var(--fg);
+  }
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  li[hidden],
+  section[hidden] {
+    display: none;
+  }
+  li > time {
+    color: var(--muted);
+  }
+  li a {
+    text-decoration: none;
+  }
+  li a:hover strong {
+    color: var(--accent);
+  }
+  .meta {
+    margin: 0.15rem 0 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+</style>
