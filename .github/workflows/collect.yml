@@ -48,6 +48,8 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Claude の途中経過と権限拒否をログに出す（公開ログ。機密は含まれない）
+          show_full_output: true
           claude_args: >-
             --model sonnet
             --effort high
