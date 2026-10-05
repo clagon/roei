@@ -55,6 +55,7 @@ jobs:
             --effort high
             --max-turns 50
             --allowedTools "WebSearch,WebFetch,Glob,Grep,Read(data/**),Read(src/content.config.ts),Edit(data/**),Write(data/**),Bash(pnpm build),Bash(node scripts/check-urls.mjs)"
+            --disallowedTools "Agent"
           prompt: |
             あなたは日本の組織による情報漏洩事案のデータベースを更新する担当です。
             公表日が ${{ steps.range.outputs.from }} から ${{ steps.range.outputs.to }} までの事案を収集し、data/incidents/ に保存してください。
@@ -75,6 +76,9 @@ jobs:
             - 1事案1ファイル: data/incidents/<公表年>/<公表日>-<組織名の英字スラッグ>.json （例: data/incidents/2026/2026-03-14-example-corp.json）
             - publishedAt は第1報の公表日。title・summary は日本語で、事実のみを簡潔に書く。
             - 保存前に Grep で既存ファイルを組織名で検索し、同じ事案の続報なら新規作成せず既存ファイルの reports に追記して、件数などの項目を最新情報に更新する。
+
+            ## 進め方
+            サブエージェントは使わず、すべて自分で調査・保存まで行ってください。バックグラウンドで処理を任せて終了すると、保存されないまま実行が終わります。
 
             ## 検証
             保存し終えたら `pnpm build`（スキーマ検証）と `node scripts/check-urls.mjs`（URL 到達確認）を実行し、
