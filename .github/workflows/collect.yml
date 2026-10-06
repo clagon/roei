@@ -61,13 +61,15 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          # 定期実行（cron）の実行者は、ワークフローを最後に更新したアクターになる。bot が更新したときも実行できるようにする
+          allowed_bots: "chatora-bot"
           # Claude の途中経過と権限拒否をログに出す（公開ログ。機密は含まれない）
           show_full_output: true
           claude_args: >-
             --model sonnet
             --effort medium
             --max-turns 100
-            --allowedTools "WebSearch,WebFetch,Glob,Grep,Read(data/**),Read(src/content.config.ts),Read(.candidates/**),Edit(data/**),Write(data/**),Bash(pnpm build),Bash(node scripts/check-urls.mjs)"
+            --allowedTools "WebSearch,WebFetch,Glob,Grep,Read(data/**),Read(src/content.config.ts),Read(.candidates/**),Edit(data/**),Edit(/data/**),Write(data/**),Write(/data/**),Bash(pnpm build),Bash(node scripts/check-urls.mjs)"
             --disallowedTools "Agent"
           prompt: |
             あなたは日本の組織による情報漏洩事案のデータベースを更新する担当です。
