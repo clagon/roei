@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       month:
-        description: "過去分を取り込む月 (YYYY-MM)。空なら直近7日間に出た記事（公表日は45日前まで）"
+        description: "過去分を取り込む月 (YYYY-MM)。カンマ区切りで複数指定すると、順番に1つずつ実行する（同じ月を繰り返してもよい。例: 2026-02,2026-02,2026-03）。空なら直近7日間に出た記事（公表日は45日前まで）"
         required: false
 
 concurrency:
@@ -15,6 +15,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write # 月を複数指定したとき、残りの月で次の実行を起動する
 
 jobs:
   collect:
@@ -33,9 +34,17 @@ jobs:
         env:
           MONTH: ${{ inputs.month }}
         run: |
+          rest=""
           if [ -n "$MONTH" ]; then
-            [[ "$MONTH" =~ ^[0-9]{4}-(0[1-9]|1[0-2])$ ]] || { echo "month は YYYY-MM 形式で指定してください"; exit 1; }
-            from="$MONTH-01"
+            # 複数指定されたときは、先頭の月だけを実行し、残りは最後のステップで次の実行に渡す
+            # （concurrency は待機中の実行を1つしか持てず、まとめて起動すると間の実行が取り消されるため）
+            # 分割する前に、入力の全体を検証する（末尾のカンマや改行が、分割で黙って捨てられるのを防ぐ）
+            ym='[0-9]{4}-(0[1-9]|1[0-2])'
+            [[ "$MONTH" =~ ^$ym(,$ym)*$ ]] || { echo "month は YYYY-MM 形式（カンマ区切りで複数可、空白や改行は不可）で指定してください: $MONTH"; exit 1; }
+            IFS=',' read -ra months <<< "$MONTH"
+            first="${months[0]}"
+            [ "${#months[@]}" -gt 1 ] && rest=$(IFS=','; echo "${months[*]:1}")
+            from="$first-01"
             to=$(date -u -d "$from +1 month -1 day" +%F)
             article_from="$from"
           else
@@ -44,6 +53,7 @@ jobs:
             to=$(date -u +%F)
             article_from=$(date -u -d '7 days ago' +%F)
           fi
+          echo "rest=$rest" >> "$GITHUB_OUTPUT"
           echo "from=$from" >> "$GITHUB_OUTPUT"
           echo "article_from=$article_from" >> "$GITHUB_OUTPUT"
           echo "to=$to" >> "$GITHUB_OUTPUT"
@@ -61,8 +71,9 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # 定期実行（cron）の実行者は、ワークフローを最後に更新したアクターになる。bot が更新したときも実行できるようにする
-          allowed_bots: "chatora-bot"
+          # 定期実行（cron）の実行者は、ワークフローを最後に更新したアクターになる。bot が更新したときも実行できるようにする。
+          # github-actions は、月を複数指定したときに、次の実行を GITHUB_TOKEN で起動するときの実行者（このワークフローは schedule と workflow_dispatch だけで動くので、外部の App は起動できない）
+          allowed_bots: "chatora-bot,github-actions"
           # Claude の途中経過と権限拒否をログに出す（公開ログ。機密は含まれない）
           show_full_output: true
           claude_args: >-
@@ -156,3 +167,12 @@ jobs:
         run: |
           echo "::error::Claude の実行が失敗しました（保存済みのファイルは検証して push 済み）。ログを確認してください。"
           exit 1
+
+      # 月が複数指定されていたら、残りの月で次の実行を起動する。ここまでのステップがすべて成功したときだけ続ける
+      # （Claude の失敗などで止まったときに、使用枠を無駄に使い続けないため）
+      - name: 残りの月の実行を起動
+        if: steps.range.outputs.rest != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REST: ${{ steps.range.outputs.rest }}
+        run: gh workflow run collect.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" -f month="$REST"
