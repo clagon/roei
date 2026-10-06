@@ -1,0 +1,21 @@
+{
+  "organization": "株式会社シーエーシー（CAC）",
+  "publishedAt": "2026-01-05",
+  "title": "寄附金Web申請クラウドサービス「Academic Support Navi」への不正アクセス",
+  "summary": "2025年12月25日、同社が提供する寄附金Web申請クラウドサービス「Academic Support Navi」のサーバーで不審な挙動を検知し、サービスを停止して外部アクセスを遮断した。第2報（1月13日）で第三者により管理者権限が不正に使用されたことが確認され、個人データの漏えいのおそれがある事態として個人情報保護委員会へ報告した。外部流出を示す具体的な痕跡は確認されていない。",
+  "category": "不正アクセス",
+  "industry": "IT・通信",
+  "discoveredAt": "2025-12-25",
+  "reports": [
+    {
+      "date": "2026-01-05",
+      "url": "https://www.cac.co.jp/news/topics_260105/",
+      "summary": "「Academic Support Navi」サービスの一時停止に関するお知らせ。"
+    },
+    {
+      "date": "2026-01-13",
+      "url": "https://www.cac.co.jp/news/topics_260113/",
+      "summary": "不正アクセスに関する調査状況のご報告（第2報）。"
+    }
+  ]
+}
