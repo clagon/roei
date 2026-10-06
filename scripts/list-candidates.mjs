@@ -3,13 +3,16 @@
 // from/to は組織が公表した日の範囲。記事は公表より遅れて出ることがあるため、to から LAG_DAYS 日後（今日まで）に出た記事も候補に含める。
 // 記事の日付（articleDate）は公表日ではない。公表日の判定は、公式発表を確認する Claude が行う。
 // Claude が一覧の読み飛ばしやリンクの取りこぼしをしないよう、列挙は LLM に任せない。
-// 使い方: node scripts/list-candidates.mjs 2026-05-01 2026-05-31
+// articleFrom は、この日以降に出た記事だけを対象にする下限（省略時は from）。毎日の実行では、
+// 公表日の範囲を広く（45日）取りつつ、新しく出た記事（直近7日間）だけを見るために使う。
+// 使い方: node scripts/list-candidates.mjs 2026-05-01 2026-05-31 [記事の下限]
 // ponytail: HTML を正規表現で読んでいる。サイトの構造が変わったら 0 件になるので、その場合は異常終了させる。
 import { mkdirSync, writeFileSync } from "node:fs";
 
-const [from, to] = process.argv.slice(2);
-if (!/^\d{4}-\d{2}-\d{2}$/.test(from ?? "") || !/^\d{4}-\d{2}-\d{2}$/.test(to ?? "")) {
-  console.error("usage: node scripts/list-candidates.mjs YYYY-MM-DD YYYY-MM-DD");
+const [from, to, articleFrom = from] = process.argv.slice(2);
+const isDate = (d) => /^\d{4}-\d{2}-\d{2}$/.test(d ?? "");
+if (![from, to, articleFrom].every(isDate)) {
+  console.error("usage: node scripts/list-candidates.mjs YYYY-MM-DD YYYY-MM-DD [YYYY-MM-DD]");
   process.exit(2);
 }
 
@@ -43,7 +46,7 @@ function months(from, to) {
 
 // 月別一覧をページ送りで最後まで読む（新しい記事が出なくなったら終了）
 const articles = new Map();
-for (const ym of months(from, articleTo)) {
+for (const ym of months(articleFrom, articleTo)) {
   for (let page = 1; page <= 30; page++) {
     // 最終ページの次は 404 が返る
     const html = await get(`${BASE}/category/incident/incident/${ym}/?page=${page}`, { allow404: true });
@@ -52,7 +55,7 @@ for (const ym of months(from, articleTo)) {
     for (const [, path, inner] of html.matchAll(/<a[^>]*href="(\/article\/\d{4}\/\d{2}\/\d{2}\/\d+\.html)[^"]*"[^>]*>([\s\S]*?)<\/a>/g)) {
       const [, y, m, d] = path.match(/\/article\/(\d{4})\/(\d{2})\/(\d{2})\//);
       const date = `${y}-${m}-${d}`;
-      if (date < from || date > articleTo || articles.has(path)) continue;
+      if (date < articleFrom || date > articleTo || articles.has(path)) continue;
       // 一覧のリンク文字列は「カテゴリ 日時 題名」の順。日時より後ろを題名とする
       const title = text(inner).replace(/^.*?\d{4}\.\d{1,2}\.\d{1,2} \S+ \d{1,2}:\d{2} /, "");
       articles.set(path, { articleDate: date, title, articleUrl: BASE + path });

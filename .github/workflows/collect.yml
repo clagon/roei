@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       month:
-        description: "過去分を取り込む月 (YYYY-MM)。空なら直近7日間"
+        description: "過去分を取り込む月 (YYYY-MM)。空なら直近7日間に出た記事（公表日は45日前まで）"
         required: false
 
 concurrency:
@@ -37,15 +37,19 @@ jobs:
             [[ "$MONTH" =~ ^[0-9]{4}-(0[1-9]|1[0-2])$ ]] || { echo "month は YYYY-MM 形式で指定してください"; exit 1; }
             from="$MONTH-01"
             to=$(date -u -d "$from +1 month -1 day" +%F)
+            article_from="$from"
           else
-            from=$(date -u -d '7 days ago' +%F)
+            # 記事は公表より遅れて出るので、公表日の範囲は45日、新しく出た記事は直近7日間を見る
+            from=$(date -u -d '45 days ago' +%F)
             to=$(date -u +%F)
+            article_from=$(date -u -d '7 days ago' +%F)
           fi
           echo "from=$from" >> "$GITHUB_OUTPUT"
+          echo "article_from=$article_from" >> "$GITHUB_OUTPUT"
           echo "to=$to" >> "$GITHUB_OUTPUT"
 
       # 候補の列挙は Claude に任せず、スクリプトで機械的に行う（一覧の読み飛ばしやリンクの取りこぼしを防ぐ）
-      - run: node scripts/list-candidates.mjs "${{ steps.range.outputs.from }}" "${{ steps.range.outputs.to }}"
+      - run: node scripts/list-candidates.mjs "${{ steps.range.outputs.from }}" "${{ steps.range.outputs.to }}" "${{ steps.range.outputs.article_from }}"
 
       # ターン数の上限などで失敗しても、保存済みのファイルは検証して push する（失敗は最後に再度報告する）
       - id: claude
