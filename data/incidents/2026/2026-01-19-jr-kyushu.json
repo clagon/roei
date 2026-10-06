@@ -1,0 +1,20 @@
+{
+  "organization": "九州旅客鉄道株式会社（JR九州）",
+  "publishedAt": "2026-01-19",
+  "title": "グループ会社ネットワークへの不正アクセスにより従業員情報が漏えいした可能性",
+  "summary": "2025年10月17日、JR九州グループ会社のネットワークが第三者による不正アクセスを受け、調査の結果PCログイン情報等が漏えいした可能性があると判断した。対象はグループ58社の従業員・派遣スタッフ・退職者14,638名で、氏名、会社付与のメールアドレス、PCログインIDが含まれる。漏えいの事実は確認されていない。個人情報保護委員会へ報告済み。",
+  "category": "不正アクセス",
+  "industry": "インフラ",
+  "records": {
+    "count": 14638
+  },
+  "dataTypes": ["氏名", "メールアドレス", "PCログインID"],
+  "occurredAt": "2025-10-17",
+  "reports": [
+    {
+      "date": "2026-01-19",
+      "url": "https://www.jrkyushu.co.jp/common/inc/news/newtopics/__icsFiles/afieldfile/2026/01/19/20260119_noticeforthosewithexperienceworkingatjrkyushugroupcompanies.pdf",
+      "summary": "グループ会社従業員の個人情報漏えいの可能性について。"
+    }
+  ]
+}
