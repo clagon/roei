@@ -82,7 +82,7 @@ jobs:
             ## 情報源
             事案の候補は、ScanNetSecurity の月別一覧と Google ニュースの検索から列挙済みです（下の「手順」を参照）。公式発表の URL が分からない候補は、WebSearch で探してください。
             ただしニュース記事は事案を見つけるためだけに使い、reports[].url には必ず当該組織の公式発表（プレスリリース・お知らせ・PDF）の URL を入れてください。
-            WebFetch で公式発表の中身を実際に確認できなかった事案は保存しないでください。
+            公式発表の中身を、取得済みの本文ファイル（`links[].fetch.file`）または WebFetch で実際に確認できなかった事案は保存しないでください。
 
             ## 手順
             1. 候補は、ScanNetSecurity の月別一覧と Google ニュースの検索から、機械的に列挙済みです。`.candidates/candidates.json` を Read してください（記事の日付 `articleDate`・題名・記事 URL・情報源 `source`・同じ事案を報じた他の媒体 `alsoReportedBy`・記事の冒頭 `excerpt`・公式発表の候補 URL `links` の一覧）。一覧を自分で読み直す必要はありません。

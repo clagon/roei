@@ -43,13 +43,17 @@ async function fetchText(url) {
   if (!res.ok) return { status: res.status };
   const type = res.headers.get("content-type") ?? "";
   const buf = new Uint8Array(await res.arrayBuffer());
-  const isPdf = /pdf/i.test(type) || url.toLowerCase().split("?")[0].endsWith(".pdf");
+  // 拡張子のないダウンロード用 URL や、汎用の MIME 型で配られる PDF もあるので、先頭のバイト列（%PDF-）でも判定する
+  const isPdf = String.fromCharCode(...buf.slice(0, 5)) === "%PDF-" || /pdf/i.test(type) || url.toLowerCase().split("?")[0].endsWith(".pdf");
   if (isPdf) {
     const pdf = await getDocumentProxy(buf);
     const { text } = await extractText(pdf, { mergePages: true });
     return { status: 200, kind: "pdf", text: text.replace(/\s+/g, " ").trim() };
   }
-  return { status: 200, kind: "html", text: htmlToText(decode(buf, type)) };
+  const text = htmlToText(decode(buf, type));
+  // PDF 以外のバイナリ（画像・圧縮ファイルなど）を文字として読んだものは、本文として渡さない
+  if ((text.match(/[\uFFFD\u0000-\u0008\u000E-\u001F]/g)?.length ?? 0) > text.length * 0.05) return { status: 200, kind: "binary", text: "" };
+  return { status: 200, kind: "html", text };
 }
 
 const jobs = [];
