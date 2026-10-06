@@ -1,7 +1,7 @@
 // .candidates/candidates.json の公式発表の URL を先にダウンロードして、本文のテキストを .candidates/official/ に書き出す。
 // Claude の WebFetch は PDF を読めず、403 などで弾かれることも多いため、取得と本文の抽出は機械的に行い、
 // Claude には書き出したテキストを読んで判断させる。取得できなかったものは、Claude が従来どおり WebFetch で試す。
-// 使い方: node scripts/list-candidates.mjs ... && node scripts/fetch-official.mjs
+// 使い方: node scripts/list-candidates.mjs ... && node scripts/fetch-official.mjs [公表日の範囲の終わり YYYY-MM-DD]
 // ponytail: HTML のタグ除去は正規表現。本文の抽出精度より、確認に足る冒頭を確実に渡すことを優先している。
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { extractText, getDocumentProxy } from "unpdf";
@@ -105,6 +105,21 @@ async function run({ link, file }) {
 for (let i = 0; i < jobs.length; i += 6) await Promise.all(jobs.slice(i, i + 6).map(run));
 
 writeFileSync(FILE, JSON.stringify(candidates, null, 1));
+
+// 候補の一覧を、1行1件の短い形で index.txt に書く。candidates.json は整形すると数千行・数百KB になり、
+// Claude の Read では先頭の数件しか読めない。index.txt なら全候補を数回の Read で見渡せる。
+// 列: 番号 / 記事の日付 / 情報源(S=ScanNetSecurity, G=Google ニュース) / 題名 / 取得済みの本文ファイル / 公式発表の候補 URL（本文がないもの）
+const line = (c, i) => {
+  const direct = c.links.filter((l) => !l.topPageOnly);
+  const files = direct.map((l) => l.fetch?.file).filter(Boolean);
+  const url = files.length ? "-" : (direct[0]?.url ?? "-");
+  return [i, c.articleDate, c.source.startsWith("Scan") ? "S" : "G", c.title.replace(/\s+/g, " ").slice(0, 55), files.join(",") || "-", url].join("\t");
+};
+// 並び: 公式発表の URL を持つ ScanNetSecurity の候補（範囲内の記事、範囲より後の記事の順）、最後に Google ニュース由来
+const toDate = process.argv[2];
+const rank = (c) => (c.source.startsWith("Scan") ? (toDate && c.articleDate > toDate ? 1 : 0) : 2);
+const ordered = candidates.map((c, i) => ({ c, i })).sort((a, b) => rank(a.c) - rank(b.c) || b.c.articleDate.localeCompare(a.c.articleDate));
+writeFileSync(`${OUT.replace(/\/official$/, "")}/index.txt`, ordered.map(({ c, i }) => line(c, i)).join("\n") + "\n");
 
 const fetched = jobs.filter((j) => j.link.fetch?.file);
 const count = (f) => jobs.filter((j) => f(j.link.fetch ?? {})).length;
