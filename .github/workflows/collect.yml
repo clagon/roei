@@ -22,7 +22,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
+      # 待機していた実行は、起動した時点の commit（github.sha）を既定で checkout するため、先行する実行が push した
+      # データを含まない古い状態で動き、同じ事案を重複して保存してしまう。ブランチ名で指定して、開始時点の最新を取得する
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref_name }}
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
