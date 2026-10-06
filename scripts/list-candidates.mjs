@@ -164,6 +164,8 @@ for (const [name, run] of Object.entries(sources)) {
   try {
     const list = await run();
     console.log(`${name}: ${list.length}件`);
+    // 0件は、サイトの構造が変わって何も読み取れなくなったときにも起きる。黙って落とさず警告する
+    if (list.length === 0) console.warn(`::warning::${name} の候補が0件でした。サイトの構造が変わった可能性があります。`);
     bySource[name] = list;
   } catch (e) {
     // 1つの情報源が壊れても、残りで続ける
