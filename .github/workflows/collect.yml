@@ -139,7 +139,12 @@ jobs:
           git commit -m "data: ${FROM}〜${TO} の情報漏洩事案を更新"
           # 実行中に main が進んでいる（別の実行の push や、PR のマージ）と push が拒否されるので、取り込み直して再試行する
           for attempt in 1 2 3; do
-            git pull --rebase -q origin main && git push && exit 0
+            if git pull --rebase -q origin main; then
+              # 取り込んだ main でスキーマなどが変わっているかもしれないので、取り込み後の状態でも検証してから push する
+              # （ここでの検証失敗は、データが新しい仕様に合わなくなったということなので、再試行せずに失敗にする）
+              pnpm install --frozen-lockfile --silent && pnpm build || { echo "::error::main を取り込んだ状態でのビルドに失敗しました。push しません"; exit 1; }
+              git push && exit 0
+            fi
             echo "push に失敗しました（${attempt}/3）。取り込み直して再試行します"
             git rebase --abort 2>/dev/null || true
             sleep $((attempt * 5))
