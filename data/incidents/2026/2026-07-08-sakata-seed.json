@@ -1,0 +1,16 @@
+{
+  "organization": "株式会社サカタのタネ",
+  "publishedAt": "2026-07-08",
+  "title": "ブラジル連結子会社に対するサイバー攻撃",
+  "summary": "連結子会社 Sakata Seed Sudamerica LTDA. のサーバーへの不正アクセスを2026年6月27日に検知。調査の結果、一部の情報にアクセスされ漏えいした可能性があると判断した。業務停止に至る被害や国内外の他グループ会社への影響は確認されていない。",
+  "category": "不正アクセス",
+  "industry": "製造",
+  "discoveredAt": "2026-06-27",
+  "reports": [
+    {
+      "date": "2026-07-08",
+      "url": "https://corporate.sakataseed.co.jp/news/2026/20260708_02.html",
+      "summary": "ブラジル連結子会社に対するサイバー攻撃に関するお知らせ"
+    }
+  ]
+}
