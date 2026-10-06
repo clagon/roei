@@ -52,7 +52,7 @@ jobs:
       - run: node scripts/list-candidates.mjs "${{ steps.range.outputs.from }}" "${{ steps.range.outputs.to }}" "${{ steps.range.outputs.article_from }}"
 
       # 公式発表の本文（PDF を含む）も先に取得してテキストにする。WebFetch は PDF を読めず、403 でも弾かれやすい
-      - run: node scripts/fetch-official.mjs
+      - run: node scripts/fetch-official.mjs "${{ steps.range.outputs.to }}"
 
       # ターン数の上限などで失敗しても、保存済みのファイルは検証して push する（失敗は最後に再度報告する）
       - id: claude
@@ -85,7 +85,7 @@ jobs:
             公式発表の中身を、取得済みの本文ファイル（`links[].fetch.file`）または WebFetch で実際に確認できなかった事案は保存しないでください。
 
             ## 手順
-            1. 候補は、ScanNetSecurity の月別一覧と Google ニュースの検索から、機械的に列挙済みです。`.candidates/candidates.json` を Read してください（記事の日付 `articleDate`・題名・記事 URL・情報源 `source`・同じ事案を報じた他の媒体 `alsoReportedBy`・記事の冒頭 `excerpt`・公式発表の候補 URL `links` の一覧）。一覧を自分で読み直す必要はありません。
+            1. 候補は、ScanNetSecurity の月別一覧と Google ニュースの検索から、機械的に列挙済みです。`.candidates/index.txt` を、先頭から最後まで 200 行ずつ Read してください（1行1候補、タブ区切り。列は「番号・記事の日付・情報源（S=ScanNetSecurity、G=Google ニュース）・題名・取得済みの本文ファイル・公式発表の候補 URL」）。並びは、ScanNetSecurity の候補（範囲内の日付の記事、範囲より後の日付の記事の順）、最後に Google ニュース由来です。全行を読み終えてから、調べる候補を決めてください。一覧を自分で読み直す必要はありません。詳細（記事の冒頭 `excerpt`、`links`、`alsoReportedBy` など）が必要な候補は、番号を使って `.candidates/detail/<番号>.json` を Read してください。`.candidates/candidates.json` は数千行あるので、読まないでください。
                - `articleDate` は記事が出た日で、組織が公表した日ではありません。記事は公表より遅れて出るため、範囲より後の日付の記事も含まれています。公表日は、`excerpt`（「〇月〇日、〜を公表した」など）と、公式発表の中身で確認し、範囲内（上記の from〜to）のものだけを保存してください。範囲外の公表のものは候補から外します。
                - `source` が ScanNetSecurity の候補は、`links` に公式発表の URL があります。Google ニュース由来の候補は `links` が空で、`articleUrl` は転送用なので WebFetch しないでください。題名（媒体名を除いたもの）を手がかりに、公式発表を WebSearch で探します。
                - `links[].fetch.file` がある場合は、公式発表の本文を取得済みです。そのファイルを Read して内容（組織名・公表日・事実関係）を確認してください。WebFetch は不要です。
