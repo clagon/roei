@@ -10,6 +10,7 @@ const FILE = ".candidates/candidates.json";
 const OUT = ".candidates/official";
 const MAX_CHARS = 6000; // 1件あたりに残す本文の長さ
 const LINKS_PER_CANDIDATE = 2;
+const MAX_BYTES = 15 * 1024 * 1024; // これを超える応答は読まない（同時6件でもメモリを使い切らないため）
 const headers = {
   "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
   "accept-language": "ja,en;q=0.8",
@@ -38,11 +39,34 @@ const htmlToText = (html) =>
     .replace(/\s+/g, " ")
     .trim();
 
+// 応答を MAX_BYTES までしか読み込まない。超えたら読むのをやめて null を返す
+async function readLimited(res) {
+  if (Number(res.headers.get("content-length")) > MAX_BYTES) {
+    await res.body?.cancel();
+    return null;
+  }
+  const reader = res.body.getReader();
+  const chunks = [];
+  let size = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    size += value.length;
+    if (size > MAX_BYTES) {
+      await reader.cancel();
+      return null;
+    }
+    chunks.push(value);
+  }
+  return new Uint8Array(Buffer.concat(chunks));
+}
+
 async function fetchText(url) {
   const res = await fetch(url, { headers, redirect: "follow", signal: AbortSignal.timeout(25_000) });
   if (!res.ok) return { status: res.status };
   const type = res.headers.get("content-type") ?? "";
-  const buf = new Uint8Array(await res.arrayBuffer());
+  const buf = await readLimited(res);
+  if (!buf) return { status: 200, tooLarge: true };
   // 拡張子のないダウンロード用 URL や、汎用の MIME 型で配られる PDF もあるので、先頭のバイト列（%PDF-）でも判定する
   const isPdf = String.fromCharCode(...buf.slice(0, 5)) === "%PDF-" || /pdf/i.test(type) || url.toLowerCase().split("?")[0].endsWith(".pdf");
   if (isPdf) {
@@ -68,6 +92,7 @@ async function run({ link, file }) {
   try {
     const r = await fetchText(link.url);
     if (r.status !== 200) return void (link.fetch = { status: r.status });
+    if (r.tooLarge) return void (link.fetch = { status: 200, tooLarge: true });
     if (r.text.length < 40) return void (link.fetch = { status: 200, kind: r.kind, empty: true }); // 画像だけの PDF など
     writeFileSync(file, `${link.url}\n\n${r.text.slice(0, MAX_CHARS)}\n`);
     link.fetch = { status: 200, kind: r.kind, file };
@@ -84,5 +109,5 @@ const fetched = jobs.filter((j) => j.link.fetch?.file);
 const count = (f) => jobs.filter((j) => f(j.link.fetch ?? {})).length;
 console.log(
   `official: ${jobs.length} urls, 本文取得 ${fetched.length} (pdf ${fetched.filter((j) => j.link.fetch.kind === "pdf").length}), ` +
-    `本文なし ${count((f) => f.empty)}, HTTPエラー ${count((f) => f.status && f.status !== 200)}, 通信エラー ${count((f) => f.error)}`,
+    `本文なし ${count((f) => f.empty)}, 大きすぎ ${count((f) => f.tooLarge)}, HTTPエラー ${count((f) => f.status && f.status !== 200)}, 通信エラー ${count((f) => f.error)}`,
 );
