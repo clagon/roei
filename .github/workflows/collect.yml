@@ -52,7 +52,7 @@ jobs:
           show_full_output: true
           claude_args: >-
             --model sonnet
-            --effort high
+            --effort medium
             --max-turns 50
             --allowedTools "WebSearch,WebFetch,Glob,Grep,Read(data/**),Read(src/content.config.ts),Edit(data/**),Write(data/**),Bash(pnpm build),Bash(node scripts/check-urls.mjs)"
             --disallowedTools "Agent"
