@@ -44,6 +44,9 @@ jobs:
           echo "from=$from" >> "$GITHUB_OUTPUT"
           echo "to=$to" >> "$GITHUB_OUTPUT"
 
+      # 候補の列挙は Claude に任せず、スクリプトで機械的に行う（一覧の読み飛ばしやリンクの取りこぼしを防ぐ）
+      - run: node scripts/list-candidates.mjs "${{ steps.range.outputs.from }}" "${{ steps.range.outputs.to }}"
+
       # ターン数の上限などで失敗しても、保存済みのファイルは検証して push する（失敗は最後に再度報告する）
       - id: claude
         continue-on-error: true
@@ -57,7 +60,7 @@ jobs:
             --model sonnet
             --effort medium
             --max-turns 100
-            --allowedTools "WebSearch,WebFetch,Glob,Grep,Read(data/**),Read(src/content.config.ts),Edit(data/**),Write(data/**),Bash(pnpm build),Bash(node scripts/check-urls.mjs)"
+            --allowedTools "WebSearch,WebFetch,Glob,Grep,Read(data/**),Read(src/content.config.ts),Read(.candidates/**),Edit(data/**),Write(data/**),Bash(pnpm build),Bash(node scripts/check-urls.mjs)"
             --disallowedTools "Agent"
           prompt: |
             あなたは日本の組織による情報漏洩事案のデータベースを更新する担当です。
@@ -70,18 +73,18 @@ jobs:
             - 攻撃者の主張やリーク情報だけで、組織が公式に公表していないものは対象外。
 
             ## 情報源
-            Security NEXT (security-next.com)、piyolog (piyolog.hatenadiary.jp)、ITmedia NEWS などのセキュリティ系ニュースを巡回し、WebSearch で補完してください。
+            事案の候補は、ScanNetSecurity から列挙済みです（下の「手順」を参照）。候補の公式発表が見つからないときだけ、WebSearch で補完してください。
             ただしニュース記事は事案を見つけるためだけに使い、reports[].url には必ず当該組織の公式発表（プレスリリース・お知らせ・PDF）の URL を入れてください。
             WebFetch で公式発表の中身を実際に確認できなかった事案は保存しないでください。
 
             ## 手順
-            1. 候補を先にすべて列挙する。Security NEXT の月別一覧（security-next.com/date/YYYY/MM）と ScanNetSecurity の月別一覧の両方を、1ページ目で止めずに最終ページまで読む（ページ送りが尽きるまで続ける）。どちらか一方だけで済ませない。「組織名・公表日・記事 URL」の一覧にまとめる。組織名で Grep して既存ファイルを確認し、すでに保存済みの同じ事案で、reports にない新しい公式発表（続報）も見当たらないものだけを除外する。同じ組織でも別の事案なら新規の候補として残し、続報があるものは既存ファイルへの追記対象として残す。
-            2. 候補ごとに、次の順で公式発表を探す。
-               1. 報道記事を WebFetch するとき、「記事中の公式発表へのリンク（組織自身のドメインの URL）を、要約せず URL のまま全部列挙して」と指示する。
-               2. 記事が引用している公式発表の正式なタイトル（「〜に関するお詫びとお知らせ」など）を、そのまま WebSearch の検索語にする。
-               3. 組織名 + 「お知らせ」+ 事象（不正アクセス・誤送信など）で検索し、組織の公式ドメインの結果だけを採用する。
-               4. 組織のお知らせ一覧ページ（ニュース・プレスリリースの一覧）を WebFetch し、該当する日付の項目を探す。
-            3. 1候補につき、公式発表を「探す」ための取得・検索は合わせて最大4回まで。見つけた公式発表の中身を確認するための WebFetch は、この回数に数えず、別に1回行ってよい。公式発表の URL が見つからなければ「保存しない」と決めて次の候補へ進む。サイトや記事の URL（記事番号を含む）を推測して試すことはしない。
+            1. 候補は、ScanNetSecurity の月別一覧から機械的に列挙済みです。`.candidates/candidates.json` を Read してください（公表日・題名・記事 URL・公式発表の候補 URL `links` の一覧）。一覧を自分で読み直す必要はありません。
+               - `links[].url` は、記事の「一次情報または関連リンク」に載っている URL です。`topPageOnly: true` のものは組織のトップページで、個別の公式発表ではありません。
+            2. 題名から、対象外のもの（製品の脆弱性・パッチ、海外の事案、攻撃者の主張だけのもの）を除く。組織名で Grep して既存ファイルを確認し、すでに保存済みの同じ事案で、reports にない新しい公式発表（続報）も見当たらないものだけを除外する。同じ組織でも別の事案なら新規の候補として残し、続報があるものは既存ファイルへの追記対象として残す。
+            3. 残った候補を、公表日が新しい順に処理する。
+               1. `topPageOnly: false` の `links[].url` を WebFetch し、公式発表の中身（組織名・日付・事実関係）を確認する。確認できたら、その URL を reports[].url にする。
+               2. 候補の URL が開けない、または中身を確認できないとき、または `links` がトップページだけのときは、記事の題名や引用されている公式発表の正式なタイトルで WebSearch し、組織の公式ドメインの結果だけを採用する（探すための取得・検索は最大4回まで）。
+               3. 公式発表を確認できなければ「保存しない」と決めて、すぐ次の候補へ進む。サイトや記事の URL（記事番号を含む）を推測して試すことはしない。
 
             ## 保存形式
             - スキーマは src/content.config.ts を読んで従うこと。分からない任意項目は推測で埋めず省略する。
@@ -106,7 +109,7 @@ jobs:
             失敗したファイルは修正するか、直せなければ削除してください。両方成功するまで繰り返してください。
 
             ## 最終報告
-            最後に、各情報源の一覧を何ページ目まで読んだか、調べた候補の数、保存した事案の一覧と、保存しなかった事案とその理由（公式発表が見つからなかった、公式発表の中身を確認できなかった、など）を表で出力してください。
+            最後に、候補の総数と、調べた候補の数、保存した事案の一覧と、保存しなかった事案とその理由（公式発表が見つからなかった、公式発表の中身を確認できなかった、など）を表で出力してください。
 
       - run: pnpm build
       - run: pnpm check-urls
