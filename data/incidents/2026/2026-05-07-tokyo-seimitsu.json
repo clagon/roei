@@ -1,0 +1,16 @@
+{
+  "organization": "株式会社東京精密",
+  "publishedAt": "2026-05-07",
+  "title": "米国グループ会社（Accretech America Inc.）でのランサムウェア被害",
+  "summary": "2026年5月4日、米国グループ会社Accretech America Inc.の一部システムでランサムウェア被害を確認した。ネットワーク遮断と各種システムの利用停止を実施し、外部専門機関と原因・被害内容を調査中。顧客や従業員の情報への影響が確認された場合は個別に連絡するとしている。東京精密本体や他のグループ会社への影響はない。",
+  "category": "ランサムウェア",
+  "industry": "製造",
+  "occurredAt": "2026-05-04",
+  "reports": [
+    {
+      "date": "2026-05-07",
+      "url": "https://www.accretech.com/jp/news/cyber-incident_20260507.html",
+      "summary": "米国のグループ会社におけるサイバーインシデントについて"
+    }
+  ]
+}
