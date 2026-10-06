@@ -44,24 +44,26 @@ function months(from, to) {
   return out;
 }
 
-// 月別一覧をページ送りで最後まで読む（新しい記事が出なくなったら終了）
+// 月別一覧をページ送りで最後まで読む
 const articles = new Map();
 for (const ym of months(articleFrom, articleTo)) {
   for (let page = 1; page <= 30; page++) {
     // 最終ページの次は 404 が返る
     const html = await get(`${BASE}/category/incident/incident/${ym}/?page=${page}`, { allow404: true });
     if (html === null) break;
-    let added = 0;
+    const dates = [];
     for (const [, path, inner] of html.matchAll(/<a[^>]*href="(\/article\/\d{4}\/\d{2}\/\d{2}\/\d+\.html)[^"]*"[^>]*>([\s\S]*?)<\/a>/g)) {
       const [, y, m, d] = path.match(/\/article\/(\d{4})\/(\d{2})\/(\d{2})\//);
       const date = `${y}-${m}-${d}`;
+      dates.push(date);
       if (date < articleFrom || date > articleTo || articles.has(path)) continue;
       // 一覧のリンク文字列は「カテゴリ 日時 題名」の順。日時より後ろを題名とする
       const title = text(inner).replace(/^.*?\d{4}\.\d{1,2}\.\d{1,2} \S+ \d{1,2}:\d{2} /, "");
       articles.set(path, { articleDate: date, title, articleUrl: BASE + path });
-      added++;
     }
-    if (added === 0) break;
+    // 一覧は新しい順。範囲より新しい記事だけのページは読み飛ばして次へ進み、
+    // 記事がなくなったか、すべて下限より古くなったページで終える
+    if (dates.length === 0 || dates.every((d) => d < articleFrom)) break;
   }
 }
 
