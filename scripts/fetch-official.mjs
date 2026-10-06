@@ -106,6 +106,12 @@ for (let i = 0; i < jobs.length; i += 6) await Promise.all(jobs.slice(i, i + 6).
 
 writeFileSync(FILE, JSON.stringify(candidates, null, 1));
 
+// 候補ごとの詳細（記事の冒頭 excerpt、links、alsoReportedBy など）を、番号を名前にした小さなファイルに書く。
+// index.txt の番号から、そのファイルだけを Read できる（candidates.json は大きすぎて部分的にしか読めない）。
+const DETAIL = ".candidates/detail";
+mkdirSync(DETAIL, { recursive: true });
+candidates.forEach((c, i) => writeFileSync(`${DETAIL}/${i}.json`, JSON.stringify({ id: i, ...c }, null, 1)));
+
 // 候補の一覧を、1行1件の短い形で index.txt に書く。candidates.json は整形すると数千行・数百KB になり、
 // Claude の Read では先頭の数件しか読めない。index.txt なら全候補を数回の Read で見渡せる。
 // 列: 番号 / 記事の日付 / 情報源(S=ScanNetSecurity, G=Google ニュース) / 題名 / 取得済みの本文ファイル / 公式発表の候補 URL（本文がないもの）
