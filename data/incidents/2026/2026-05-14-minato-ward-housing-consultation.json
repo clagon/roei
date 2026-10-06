@@ -1,0 +1,18 @@
+{
+  "organization": "港区",
+  "publishedAt": "2026-05-14",
+  "title": "住宅課のすまいの専門相談申込書の誤廃棄",
+  "summary": "街づくり支援部住宅課が、すまいの専門相談の申込書248枚を他の廃棄文書に紛れさせて誤って廃棄した。相談者248人分の氏名・住所・電話番号・相談内容が記載されていた。外部への流出は確認されていない。",
+  "category": "紛失・盗難",
+  "industry": "行政・自治体",
+  "records": { "count": 248 },
+  "dataTypes": ["氏名", "住所", "電話番号", "相談内容"],
+  "discoveredAt": "2026-04-20",
+  "reports": [
+    {
+      "date": "2026-05-14",
+      "url": "https://www.city.minato.tokyo.jp/houdou/kuse/koho/press/202605/20260514.html",
+      "summary": "行政文書の誤廃棄について"
+    }
+  ]
+}
