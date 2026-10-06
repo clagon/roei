@@ -22,7 +22,8 @@ mkdirSync(OUT, { recursive: true });
 
 function decode(buf, contentType) {
   const head = new TextDecoder("latin1").decode(buf.slice(0, 2048));
-  const charset = (contentType.match(/charset=([\w-]+)/i) ?? head.match(/charset=["']?([\w-]+)/i))?.[1] ?? "utf-8";
+  // charset="Shift_JIS" や charset = euc-jp のように、引用符や空白が付く書き方もある
+  const charset = (contentType.match(/charset\s*=\s*["']?([\w-]+)/i) ?? head.match(/charset\s*=\s*["']?([\w-]+)/i))?.[1] ?? "utf-8";
   try {
     return new TextDecoder(charset).decode(buf);
   } catch {
