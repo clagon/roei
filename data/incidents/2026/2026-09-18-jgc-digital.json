@@ -1,0 +1,19 @@
+{
+  "organization": "JGC Digital株式会社",
+  "publishedAt": "2026-09-18",
+  "title": "BIツール「Metabase」の脆弱性を悪用した不正アクセスで約6万件のアカウント情報が流出",
+  "summary": "2026年9月16日、データ分析に利用していたBIツール「Metabase」の脆弱性を悪用した不正アクセスを検知。建設現場向けサービス「アザス」約4万件、衣類回収サービス「するーぷ」約2万件、計約6万件のアカウント情報が取得された。パスワードは管理しておらず漏えいなし。Metabaseの利用は終了する。",
+  "category": "不正アクセス",
+  "industry": "IT・通信",
+  "records": { "count": 60000, "qualifier": "約" },
+  "dataTypes": ["氏名", "生年月日", "性別", "メールアドレス", "所属", "郵便番号"],
+  "occurredAt": "2026-09-16",
+  "discoveredAt": "2026-09-16",
+  "reports": [
+    {
+      "date": "2026-09-18",
+      "url": "https://jgc-digital.com/topics/topics-3049/",
+      "summary": "不正アクセスによる個人情報流出に関するお知らせとお詫び"
+    }
+  ]
+}
