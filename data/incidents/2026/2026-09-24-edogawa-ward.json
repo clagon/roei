@@ -1,0 +1,19 @@
+{
+  "organization": "東京都江戸川区",
+  "publishedAt": "2026-09-24",
+  "title": "採用内定式の開催案内メール誤送信で内定者96名のメールアドレスが流出",
+  "summary": "9月18日、区職員が採用内定式の開催案内を正規職員内定者96名に送信した際、BCCではなく宛先欄にアドレスを入力したため、96名分のメールアドレスが相互に閲覧できる状態になった。9月21日に誤送信に気付き、22日に謝罪と削除依頼を送信した。被害の報告はない。",
+  "category": "誤送信",
+  "industry": "行政・自治体",
+  "records": { "count": 96 },
+  "dataTypes": ["メールアドレス"],
+  "occurredAt": "2026-09-18",
+  "discoveredAt": "2026-09-21",
+  "reports": [
+    {
+      "date": "2026-09-24",
+      "url": "https://www.city.edogawa.tokyo.jp/e004/kuseijoho/kohokocho/press/2026/09/0924.html",
+      "summary": "メール誤送信による個人情報の流出"
+    }
+  ]
+}
