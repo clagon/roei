@@ -10,6 +10,11 @@
       "date": "2026-07-13",
       "url": "https://www.hachioji.ed.jp/information/urgent/4997/",
       "summary": "本校を標的にしたサイバー攻撃につきまして"
+    },
+    {
+      "date": "2026-09-30",
+      "url": "https://www.hachioji.ed.jp/information/information-junr/5111/",
+      "summary": "第２報：フォレンジック調査の結果、リモートデスクトップ接続経由の侵入とランサムウェア暗号化を確認。個人情報ファイルの外部流出は確認されず"
     }
   ]
 }
