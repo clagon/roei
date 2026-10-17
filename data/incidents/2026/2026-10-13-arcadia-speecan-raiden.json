@@ -1,0 +1,18 @@
+{
+  "organization": "株式会社アルカディア",
+  "publishedAt": "2026-10-13",
+  "title": "「SpeeCAN RAIDEN」への不正アクセスにより個人情報が漏洩した可能性",
+  "summary": "アルカディアは、同社が運営する「SpeeCAN RAIDEN」で10月11日に不正アクセスが疑われる不審な挙動を確認し、連絡先データ・担当者・契約者情報が漏洩した可能性があると公表した。10月12日に侵入経路を遮断する応急措置を実施し、影響範囲を調査している。",
+  "category": "不正アクセス",
+  "industry": "IT・通信",
+  "dataTypes": ["連絡先データ", "担当者情報", "契約者情報"],
+  "occurredAt": "2026-10-11",
+  "discoveredAt": "2026-10-11",
+  "reports": [
+    {
+      "date": "2026-10-13",
+      "url": "https://www.arcadia.co.jp/wp-content/uploads/2026/10/20261012_SpeeCANRAIDEN_cyberattack.pdf",
+      "summary": "不正アクセスの経緯、漏洩の可能性がある情報、対応状況を公表。"
+    }
+  ]
+}
