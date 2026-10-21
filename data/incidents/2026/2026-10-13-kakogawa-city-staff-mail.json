@@ -1,0 +1,17 @@
+{
+  "organization": "加古川市",
+  "publishedAt": "2026-10-13",
+  "title": "職員メール配信システム運用事業者への不正アクセスにより職員情報約2,200件が漏えいした可能性",
+  "summary": "加古川市は、職員メール配信システムを運用する事業者が外部から不正アクセスを受け、職員の氏名・メールアドレス等約2,200件が漏えいした可能性があると公表した。市民の個人情報の漏えいは確認されておらず、「防災ネットかこがわ」は別事業者のサービスで影響はない。",
+  "category": "不正アクセス",
+  "industry": "行政・自治体",
+  "records": { "count": 2200, "qualifier": "約" },
+  "dataTypes": ["氏名", "メールアドレス"],
+  "reports": [
+    {
+      "date": "2026-10-13",
+      "url": "https://www.city.kakogawa.lg.jp/soshikikarasagasu/bousai/kikikanrisitsu/sizensaigai/kikikanrikakaranooshirase/51199.html",
+      "summary": "事業者への不正アクセスと本市への影響（職員情報約2,200件の漏えいの可能性）を公表。"
+    }
+  ]
+}
