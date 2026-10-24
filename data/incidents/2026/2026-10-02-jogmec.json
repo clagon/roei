@@ -1,0 +1,14 @@
+{
+  "organization": "独立行政法人エネルギー・金属鉱物資源機構（JOGMEC）",
+  "publishedAt": "2026-10-02",
+  "title": "不正アクセスによる個人情報の漏えいの可能性",
+  "summary": "外部機関からの情報提供を受けて調査した結果、情報システムへの不正アクセスにより、役職員のメールアドレス約1,100件と機構外のメールアドレス約7,400件が漏えいした可能性があることが9月9日に判明した。個人情報保護委員会へ報告済み。",
+  "category": "不正アクセス",
+  "industry": "行政・自治体",
+  "records": { "count": 8500, "qualifier": "約" },
+  "dataTypes": ["メールアドレス"],
+  "discoveredAt": "2026-09-09",
+  "reports": [
+    { "date": "2026-10-02", "url": "https://www.jogmec.go.jp/news/information/information_00706.html", "summary": "不正アクセスによる個人情報の漏えいの可能性に関するお詫びとご報告" }
+  ]
+}
