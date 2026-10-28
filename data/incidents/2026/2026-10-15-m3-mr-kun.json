@@ -1,0 +1,14 @@
+{
+  "organization": "エムスリー株式会社",
+  "publishedAt": "2026-10-15",
+  "title": "「MR君」への不正アクセスによる個人情報漏えい",
+  "summary": "10月14日、製薬企業向けサービス「MR君」のシステムへの不正アクセスを確認。医師会員全体の1割未満と製薬企業担当者数百名規模の氏名、勤務先、一部のメールアドレス等が漏えいした。パスワードやポイント情報は含まれない。",
+  "category": "不正アクセス",
+  "industry": "IT・通信",
+  "dataTypes": ["氏名", "勤務先", "メールアドレス"],
+  "occurredAt": "2026-10-14",
+  "discoveredAt": "2026-10-14",
+  "reports": [
+    { "date": "2026-10-15", "url": "https://corporate.m3.com/assets.ctfassets.net/1pwj74siywcy/4YBQ3JACTocGVgQmIVkSHe/bed9ff0b11db690e1217e0329c484104/20261015_Public_J.pdf", "summary": "不正アクセスによる個人情報漏えいに関するお詫びとお知らせ" }
+  ]
+}

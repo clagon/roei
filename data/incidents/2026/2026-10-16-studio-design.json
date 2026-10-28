@@ -1,0 +1,11 @@
+{
+  "organization": "Studio株式会社",
+  "publishedAt": "2026-10-16",
+  "title": "利用するクラウド環境への不正アクセスによる顧客情報流出の可能性",
+  "summary": "Studio社が利用するクラウド環境に第三者が不正アクセスし、預かっている顧客の情報が外部に流出した可能性があることが判明した。不正アクセスの経路は遮断済み。",
+  "category": "不正アクセス",
+  "industry": "IT・通信",
+  "reports": [
+    { "date": "2026-10-16", "url": "https://studio.design/ja/whats-new/unauthorized-access-2026-10", "summary": "【重要】不正アクセスによる情報流出に関するお詫びとお願い（第一報）" }
+  ]
+}
