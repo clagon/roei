@@ -1,0 +1,15 @@
+{
+  "organization": "株式会社リンクステーション",
+  "publishedAt": "2026-10-19",
+  "title": "チケット購入サービス「GETTIIS」の会員情報漏えい",
+  "summary": "2026年10月18日、第三者が「Gettii-Lite」プログラムの脆弱性を悪用し、「GETTIIS」の会員情報を不正取得していたことが判明。会員ID317,971件、氏名309,759件、クレジットカード関連情報29,515件などが漏えいした。",
+  "category": "不正アクセス",
+  "industry": "サービス",
+  "records": { "count": 317971 },
+  "dataTypes": ["会員ID", "ハッシュ化パスワード", "氏名", "クレジットカード関連情報"],
+  "occurredAt": "2026-10-18",
+  "discoveredAt": "2026-10-18",
+  "reports": [
+    { "date": "2026-10-19", "url": "https://www.gettiis.jp/notice/detail/42", "summary": "不正アクセスによるGETTIIS会員情報の漏えいに関するお詫びとお知らせ（第二報）" }
+  ]
+}

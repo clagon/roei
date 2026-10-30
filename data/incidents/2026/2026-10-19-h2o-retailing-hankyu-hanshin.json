@@ -1,0 +1,14 @@
+{
+  "organization": "エイチ・ツー・オー リテイリング株式会社／株式会社阪急阪神百貨店",
+  "publishedAt": "2026-10-19",
+  "title": "阪急百貨店・阪神百貨店予約サイト等への不正アクセスにより約126万件のH2O ID個人情報が漏えい",
+  "summary": "2026年10月16日、阪急百貨店・阪神百貨店予約サイト経由で顧客管理システムへの不正アクセスを確認。17日にHANKYU HANSHIN E-STORESとRemo Orderでも確認され、各サイトを停止。調査の結果、H2O IDのうち約126万件の個人情報の一部が漏えいしたことが判明した。",
+  "category": "不正アクセス",
+  "industry": "小売・EC",
+  "records": { "count": 1260000, "qualifier": "約" },
+  "occurredAt": "2026-10-16",
+  "discoveredAt": "2026-10-16",
+  "reports": [
+    { "date": "2026-10-19", "url": "https://data.swcms.net/file/h2o-retailing/ja/news/auto_20261019552921/pdfFile.pdf", "summary": "第三者による不正アクセス発生と個人情報漏えいに関するお詫びとお知らせ" }
+  ]
+}
