@@ -1,0 +1,17 @@
+{
+  "organization": "株式会社シップス（SHIPS CYCLE MARKET）",
+  "publishedAt": "2026-10-22",
+  "title": "外部アプリ「Swym Wishlist Plus」への不正アクセスで偽決済画面へ誘導された可能性",
+  "summary": "お気に入り機能に利用する外部アプリ「Swym Wishlist Plus」（開発元Swym Corporation）が不正アクセスを受け、2026年10月14日19時台〜15日1時台に購入手続きボタンから偽の決済画面へ誘導される不正プログラムが読み込まれた可能性がある。偽サイトでクレジットカード情報を入力した可能性のある利用者に明細確認を呼びかけている。自社データベースからの流出ではなく、当店への影響の有無は開発元に調査依頼中。",
+  "category": "不正アクセス",
+  "industry": "小売・EC",
+  "dataTypes": ["クレジットカード情報（偽サイトでの入力）"],
+  "occurredAt": "2026-10-14",
+  "reports": [
+    {
+      "date": "2026-10-22",
+      "url": "https://ships-cycle-market.jp/blogs/news/swym-security-notice-20261022",
+      "summary": "外部アプリ「Swym Wishlist Plus」におけるセキュリティ事象についてのお知らせとお詫び"
+    }
+  ]
+}
