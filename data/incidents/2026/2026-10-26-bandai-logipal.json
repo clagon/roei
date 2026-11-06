@@ -1,0 +1,13 @@
+{
+  "organization": "株式会社バンダイロジパル",
+  "publishedAt": "2026-10-26",
+  "title": "バンダイロジパルへの不正アクセスで「一番くじONLINE」の配送情報が漏えいの可能性",
+  "summary": "バンダイナムコHDの物流子会社バンダイロジパルの管理システムが不正アクセスを受け、BANDAI SPIRITSが委託する「一番くじONLINE」の配送情報（氏名・住所・電話番号）が漏えいした可能性がある。出荷システムを一時停止。件数は調査中。",
+  "category": "不正アクセス",
+  "industry": "サービス",
+  "dataTypes": ["氏名", "住所", "電話番号"],
+  "discoveredAt": "2026-10-21",
+  "reports": [
+    { "date": "2026-10-26", "url": "https://www.bandainamco.co.jp/files/2026102620HPE794A820E4B88DE6ADA3E382A2E382AFE382BB.pdf", "summary": "バンダイロジパルへの不正アクセスについてのお知らせ（第1報）" }
+  ]
+}

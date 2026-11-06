@@ -1,0 +1,14 @@
+{
+  "organization": "ペイクラウドホールディングス株式会社（子会社 株式会社バリューデザイン）",
+  "publishedAt": "2026-10-23",
+  "title": "ハウス電子マネー発行サービス「Value Card」への不正アクセスでID・PIN・残高情報142万件が流出",
+  "summary": "子会社バリューデザインが提供する「Value Card」のサーバーがWebサーバーの脆弱性を悪用され、ID番号・PIN番号・残高情報1,424,748件が流出した。個人情報は含まれず、不正利用による実被害はない。10月19日に確認。",
+  "category": "不正アクセス",
+  "industry": "IT・通信",
+  "records": { "count": 1424748 },
+  "dataTypes": ["ID番号", "PIN番号", "残高情報"],
+  "discoveredAt": "2026-10-19",
+  "reports": [
+    { "date": "2026-10-23", "url": "https://contents.xj-storage.jp/xcontents/AS71226/a90ef759/c4e7/403b/8096/5a78ba81a912/140120261023555340.pdf", "summary": "当社連結子会社が提供するシステムへの不正アクセスに関するお知らせ" }
+  ]
+}

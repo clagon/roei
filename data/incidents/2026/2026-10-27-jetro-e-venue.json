@@ -1,0 +1,14 @@
+{
+  "organization": "独立行政法人日本貿易振興機構（ジェトロ）",
+  "publishedAt": "2026-10-27",
+  "title": "ビジネスマッチングシステム「e-Venue」への不正アクセスで最大133件の個人情報が漏えいの可能性",
+  "summary": "委託先が構築・運用するe-Venueに9月24日、25日および10月14日に不正アクセスがあり、氏名・メールアドレス・電話番号等最大133件が漏えいした可能性がある。サービスは停止中。",
+  "category": "不正アクセス",
+  "industry": "行政・自治体",
+  "records": { "count": 133, "qualifier": "最大" },
+  "dataTypes": ["氏名", "メールアドレス", "電話番号", "携帯番号", "FAX番号"],
+  "occurredAt": "2026-09-24",
+  "reports": [
+    { "date": "2026-10-27", "url": "https://www.jetro.go.jp/news/announcement/2026/5eebe72f41bc2230.html", "summary": "e-Venueへの不正アクセスによる個人情報漏えいの可能性について" }
+  ]
+}
