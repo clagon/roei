@@ -1,0 +1,14 @@
+{
+  "organization": "ソニー銀行株式会社",
+  "publishedAt": "2026-10-30",
+  "title": "デジタル証券の外部委託先Securitize Japanへの不正アクセスで顧客情報が漏洩",
+  "summary": "デジタル証券に関連する外部委託先Securitize Japanのシステムが不正アクセスを受け、ソニー銀行の顧客情報が漏洩した。氏名・住所・生年月日・口座番号が4名、氏名のみが617名。デジタル証券以外のサービスには関係しない。",
+  "category": "不正アクセス",
+  "industry": "金融",
+  "records": { "count": 621 },
+  "dataTypes": ["氏名", "住所", "生年月日", "口座番号"],
+  "discoveredAt": "2026-10-29",
+  "reports": [
+    { "date": "2026-10-30", "url": "https://sonybank.jp/info/2026/1030-01.html", "summary": "外部委託先（Securitize Japan）への不正アクセスによるお客さま情報の漏洩について（11月4日更新）" }
+  ]
+}
