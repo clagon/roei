@@ -1,0 +1,15 @@
+{
+  "organization": "島根県（一般財団法人島根県物産協会）",
+  "publishedAt": "2026-11-02",
+  "title": "「しまねのふるさと直送便」へのAmazon Payプラグイン脆弱性を悪用した不正アクセス",
+  "summary": "島根県物産協会が運営するECサイトで、8月13日にEC-CUBEのAmazon Payプラグインの脆弱性を突かれ、決済画面の入力内容を読み取る不正ファイルが設置された。8月13日〜15日に決済した7人（購入6人）のクレジットカード情報が流出した可能性がある。",
+  "category": "不正アクセス",
+  "industry": "行政・自治体",
+  "records": { "count": 7 },
+  "dataTypes": ["クレジットカード情報"],
+  "occurredAt": "2026-08-13",
+  "discoveredAt": "2026-08-14",
+  "reports": [
+    { "date": "2026-11-02", "url": "https://www.pref.shimane.lg.jp/press_release/2026/eubcg9i5kolv.data/9635b80bbb78472d.pdf", "summary": "島根県による公表。ECサイトへの不正アクセスによる個人情報漏洩の可能性。" }
+  ]
+}

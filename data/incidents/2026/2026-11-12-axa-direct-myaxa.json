@@ -1,0 +1,16 @@
+{
+  "organization": "アクサ損害保険株式会社",
+  "publishedAt": "2026-11-12",
+  "title": "お客さま専用マイページ「MyAXA」への不正アクセス",
+  "summary": "11月9日に「MyAXA」への不審なアクセスを確認し遮断。第三者がアクセス権限のないお客さま情報にアクセスし、約59万7千件が対象となった可能性がある。ロードサービス委託先（プレステージ・コアソリューション）でも別途不正アクセスが発生している。",
+  "category": "不正アクセス",
+  "industry": "金融",
+  "records": { "count": 597000, "qualifier": "約" },
+  "dataTypes": ["氏名", "住所", "生年月日", "メールアドレス", "電話番号"],
+  "occurredAt": "2026-11-09",
+  "discoveredAt": "2026-11-09",
+  "reports": [
+    { "date": "2026-11-12", "url": "https://www.axa-direct.co.jp/company/official_info/announce/2026/261112.html", "summary": "第1報。MyAXAへの不正アクセスを公表。" },
+    { "date": "2026-11-13", "url": "https://www.axa-direct.co.jp/company/official_info/announce/2026/261113.html", "summary": "第2報。対象件数約59万7千件、委託先への不正アクセスにも言及。" }
+  ]
+}
