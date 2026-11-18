@@ -1,0 +1,14 @@
+{
+  "organization": "株式会社セブン銀行",
+  "publishedAt": "2026-11-11",
+  "title": "在留カード提出サイト等への不正アクセスによるお客さま情報漏洩のおそれ",
+  "summary": "在留外国人口座保有者向け在留カード提出サイトおよび口座解約受付サイトに第三者が不正アクセスし、最大150件程度の在留カード券面情報が外部へ流出した可能性がある。送金や口座解約などの不正処理は確認されていない。",
+  "category": "不正アクセス",
+  "industry": "金融",
+  "records": { "count": 150, "qualifier": "最大" },
+  "dataTypes": ["在留カード券面情報"],
+  "discoveredAt": "2026-11-09",
+  "reports": [
+    { "date": "2026-11-11", "url": "https://www.sevenbank.co.jp/support/info_notice127.html", "summary": "不正アクセスによるお客さま情報の漏洩について" }
+  ]
+}

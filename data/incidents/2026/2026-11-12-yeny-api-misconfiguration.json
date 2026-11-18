@@ -1,0 +1,14 @@
+{
+  "organization": "株式会社Yeny",
+  "publishedAt": "2026-11-12",
+  "title": "API接続設定不備による会員情報（電話番号・会員ID）の漏えい",
+  "summary": "接続先事業者から不審なAPIコールの連絡を受け調査したところ、API接続設定の不備により、ultra payカード等の会員1,332,505件（退会者含む）の電話番号と会員IDが漏えいしたことを確認した。決済情報の漏えいは確認されていない。",
+  "category": "設定ミス",
+  "industry": "金融",
+  "records": { "count": 1332505 },
+  "dataTypes": ["電話番号", "会員ID"],
+  "discoveredAt": "2026-10-31",
+  "reports": [
+    { "date": "2026-11-12", "url": "https://yeny.jp/pressrelease/1547/", "summary": "不正アクセスによる会員情報の漏えいに関するお詫びとお知らせ" }
+  ]
+}
