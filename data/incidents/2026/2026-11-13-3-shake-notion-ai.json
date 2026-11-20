@@ -1,0 +1,13 @@
+{
+  "organization": "株式会社スリーシェイク",
+  "publishedAt": "2026-11-13",
+  "title": "利用するNotion AIの委託先への不正アクセスに伴うチャット履歴漏えいのおそれ",
+  "summary": "Notion社の委託先Fireworks AI社が不正アクセスを受け、同社が利用するNotion AIへの入出力履歴が外部に漏えいした可能性がある。従業員・応募者・取引先担当者計約363名分の情報や、顧客の会社名・担当者名・相談内容などが含まれ得る。取得の有無は調査中。",
+  "category": "不正アクセス",
+  "industry": "IT・通信",
+  "records": { "count": 363, "qualifier": "約" },
+  "dataTypes": ["会社名", "担当者名", "相談・打ち合わせ内容"],
+  "reports": [
+    { "date": "2026-11-13", "url": "https://3-shake.com/notion-ai/", "summary": "「Notion AI」のチャット履歴の漏えいのおそれに関するお詫びとお知らせ（第一報）" }
+  ]
+}

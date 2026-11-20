@@ -1,0 +1,14 @@
+{
+  "organization": "株式会社イード",
+  "publishedAt": "2026-11-18",
+  "title": "「ONE cosme」への不正アクセスによる会員情報の漏えい",
+  "summary": "11月10日、第三者が海外サーバー経由で「ONE cosme」に不正アクセスし、会員データを機械的に取得した可能性がある。最大1,154名分のメールアドレス・生年月日・性別・暗号化パスワードが対象。二次被害は確認されていない。",
+  "category": "不正アクセス",
+  "industry": "サービス",
+  "records": { "count": 1154, "qualifier": "最大" },
+  "dataTypes": ["メールアドレス", "生年月日", "性別", "暗号化パスワード"],
+  "occurredAt": "2026-11-10",
+  "reports": [
+    { "date": "2026-11-18", "url": "https://onecosme.jp/info/incident_20261118.html", "summary": "不正アクセスによる個人情報漏洩に関するお詫びとお知らせ" }
+  ]
+}

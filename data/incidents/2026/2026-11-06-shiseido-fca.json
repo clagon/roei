@@ -1,0 +1,14 @@
+{
+  "organization": "株式会社資生堂",
+  "publishedAt": "2026-11-06",
+  "title": "肌測定システム「Facial Condition Analyzer」への不正アクセス",
+  "summary": "10月27日に判明した、オンライン肌測定システム「FCA」への不正アクセスにより、氏名・メールアドレス・問診データ・肌測定結果など合計2,515件の個人情報の漏えいを確認。顔画像データは含まれない。",
+  "category": "不正アクセス",
+  "industry": "小売・EC",
+  "records": { "count": 2515 },
+  "dataTypes": ["氏名", "メールアドレス", "問診データ", "肌測定結果"],
+  "discoveredAt": "2026-10-27",
+  "reports": [
+    { "date": "2026-11-06", "url": "https://corp.shiseido.com/jp/notice/20261106.html", "summary": "当社肌測定システムへの不正アクセスによる個人情報漏えいに関するお詫びとお知らせ" }
+  ]
+}
