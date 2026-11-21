@@ -1,0 +1,13 @@
+{
+  "organization": "LRM株式会社",
+  "publishedAt": "2026-11-11",
+  "title": "利用するNotion AIの委託先への不正アクセスに伴う入力情報流出のおそれ",
+  "summary": "Notion社の委託先Fireworks AI社の環境に第三者が不正アクセスし、同社ワークスペースでNotion AIを利用した際の従業員の入力内容とAIの応答の記録の一部（取引先担当者名等を含む）が外部に流出した可能性がある。11月10日にNotion社から通知を受けた。",
+  "category": "不正アクセス",
+  "industry": "IT・通信",
+  "dataTypes": ["取引先担当者名", "Notion AIへの入力内容・応答"],
+  "discoveredAt": "2026-11-10",
+  "reports": [
+    { "date": "2026-11-11", "url": "https://www.lrm.jp/info/news/info_20261111/", "summary": "クラウドサービスの委託先への不正アクセスに伴う、AI機能での入力情報の流出の可能性に関するお知らせ（第一報）" }
+  ]
+}

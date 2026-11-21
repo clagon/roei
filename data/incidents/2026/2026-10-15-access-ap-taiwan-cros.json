@@ -1,0 +1,13 @@
+{
+  "organization": "株式会社ACCESS",
+  "publishedAt": "2026-10-15",
+  "title": "連結子会社ACCESS AP TAIWANのEC事業者向け業務支援サービス「CROS」への不正アクセスと個人情報漏洩",
+  "summary": "子会社ACCESS AP TAIWANが提供する「CROS」のサーバーに不正アクセスがあり、取引先1社の通販サービス利用者の氏名・電話番号・住所・メールアドレス・受注情報が流出。取得された情報を用いた第三者への不正メール送信も判明。起点は特定1社向けのBIツール。",
+  "category": "不正アクセス",
+  "industry": "IT・通信",
+  "dataTypes": ["氏名", "電話番号", "住所", "メールアドレス", "受注情報"],
+  "discoveredAt": "2026-09-11",
+  "reports": [
+    { "date": "2026-10-15", "url": "https://www.access-company.com/wp-content/blogs.dir/3/files/2026/10/n261015.pdf", "summary": "連結子会社における不正アクセスの発生及び個人情報漏洩に関するお知らせ" }
+  ]
+}
