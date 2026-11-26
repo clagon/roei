@@ -1,0 +1,15 @@
+{
+  "organization": "株式会社ZOZO",
+  "publishedAt": "2026-11-20",
+  "title": "利用する外部サービス「KARTE」への不正アクセスでZOZOTOWN・WEARの顧客情報が漏えい",
+  "summary": "プレイド社が提供する「KARTE」への第三者による不正アクセスにより、同社がKARTE上で管理していたZOZOTOWN顧客情報（会員ID・年齢・性別・郵便番号など約1,518万人、うちログイン名・メールアドレス・電話番号を含む約4.7万人）、WEAR by ZOZO顧客約1,393万人、出店ブランド担当者約2.4万人の情報が漏えいした。パスワードとクレジットカード情報は含まれない。",
+  "category": "不正アクセス",
+  "industry": "小売・EC",
+  "records": { "count": 15180000, "qualifier": "約" },
+  "dataTypes": ["会員ID", "年齢", "性別", "郵便番号", "ログイン名", "メールアドレス", "電話番号", "企業名", "氏名"],
+  "occurredAt": "2026-11-13",
+  "discoveredAt": "2026-11-13",
+  "reports": [
+    { "date": "2026-11-20", "url": "https://corp.zozo.com/information/20261120-482917/", "summary": "当社利用の外部サービス「KARTE」への不正アクセスについて" }
+  ]
+}

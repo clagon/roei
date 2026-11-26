@@ -1,0 +1,14 @@
+{
+  "organization": "株式会社LiPLUSホールディングス",
+  "publishedAt": "2026-11-16",
+  "title": "Widsley社提供の架電システム「Telforce」への不正アクセスで約28万件の個人情報が漏えいのおそれ",
+  "summary": "マッチング事業で利用するWidsley社の架電システム「Telforce」に海外から不正アクセスがあり、10月21日に報告を受けた。アクセス記録が残らない経路から情報が取得された可能性がある。対象は約28万件で、電話番号、氏名、住所、会社名、問い合わせ内容等の記録、通話日時。二次被害は確認されていない。",
+  "category": "不正アクセス",
+  "industry": "サービス",
+  "records": { "count": 280000, "qualifier": "約" },
+  "dataTypes": ["電話番号", "氏名", "住所", "会社名", "お問い合わせ内容等の記録", "通話日時"],
+  "discoveredAt": "2026-10-21",
+  "reports": [
+    { "date": "2026-11-16", "url": "https://liplus-h.com/news/telforce-notice/", "summary": "不正アクセスによる個人情報漏えいのおそれに関するお知らせとお詫び（Widsley社提供 架電システム「Telforce」）" }
+  ]
+}
